@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ds">
+        <attr name="backgroundColor" format="color"/>
+        <attr name="statusBar" format="color"/>
+        <attr name="navigBar" format="color"/>
+        <attr name="text" format="color"/>
+        <attr name="hint" format="color"/>
+        <attr name="button" format="color"/>
+        <attr name="buttonText" format="color"/>
+        <attr name="titlebar" format="color"/>
+        <attr name="linkcolor" format="color"/>
+    </declare-styleable>
+</resources>
