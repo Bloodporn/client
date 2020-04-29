@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonlog"
+        android:id="@+id/buttonReg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
@@ -33,10 +33,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.204"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/passreg" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/passreg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -44,6 +44,8 @@
         android:layout_marginEnd="64dp"
         android:ems="10"
         android:hint="@string/password"
+        android:autofillHints="@string/password"
+
         android:inputType="textPassword"
         android:textColor="?attr/text"
         android:textColorHint="?attr/hint"
@@ -51,11 +53,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/loginreg"
         app:layout_constraintVertical_bias="0.01" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/loginreg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -63,16 +65,17 @@
         android:layout_marginEnd="64dp"
         android:ems="10"
         android:hint="@string/login"
+        android:autofillHints="@string/login"
         android:inputType="textPersonName"
         android:textColor="?attr/text"
         android:textColorHint="?attr/hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/emailreg" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/emailreg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -80,6 +83,7 @@
         android:layout_marginEnd="64dp"
         android:ems="10"
         android:hint="@string/e_mail"
+        android:autofillHints="@string/e_mail"
         android:inputType="textEmailAddress"
         android:textColor="?attr/text"
         android:textColorHint="?attr/hint"

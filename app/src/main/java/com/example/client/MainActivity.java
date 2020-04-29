@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -82,14 +83,16 @@ public class MainActivity extends AppCompatActivity {
                 String log,pass;
                 log=login.getText().toString();
                 pass=password.getText().toString();
-                if(pass==""){
-                    Toast.makeText(MainActivity.this,"Bad pass",Toast.LENGTH_SHORT);
+                if(pass.equals("")){
+                    Toast.makeText(MainActivity.this,"Bad pass",Toast.LENGTH_SHORT).show();
                 }else
-                if(log==""){
-                    Toast.makeText(MainActivity.this,"Bad login",Toast.LENGTH_SHORT);
+                if(log.equals("")){
+                    Toast.makeText(MainActivity.this,"Bad login",Toast.LENGTH_SHORT).show();
                 }else {
-                    //Авторизация
-                    Toast.makeText(MainActivity.this, "Nice dick", Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this, "Nice dick", Toast.LENGTH_SHORT).show();
+                    /*
+                     *<-- Authorization -->
+                     */
                 }
 
             }
@@ -100,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this,Registration.class);
                 startActivity(i);
-                finish();
             }
         });
 
