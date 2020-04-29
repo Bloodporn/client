@@ -10,5 +10,6 @@
         <attr name="buttonText" format="color"/>
         <attr name="titlebar" format="color"/>
         <attr name="linkcolor" format="color"/>
+        <attr name="itemBackColor" format="color"/>
     </declare-styleable>
 </resources>

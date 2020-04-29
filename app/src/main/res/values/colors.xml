@@ -13,4 +13,5 @@
     <color name="colorStatusBar">#431D631C</color>
     <color name="colorNavigationBar">#431D631C</color>
     <color name="linkcol">#03A9F4</color>
+    <color name="itemBackCol">#2C2C2C</color>
 </resources>

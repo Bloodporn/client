@@ -90,10 +90,15 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"Bad login",Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(MainActivity.this, "Nice dick", Toast.LENGTH_SHORT).show();
+
+
                     /*
                      *<-- Authorization -->
                      */
                 }
+                Intent i = new Intent(MainActivity.this,FolderView.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
 
             }
         });
