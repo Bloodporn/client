@@ -5,59 +5,74 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemViewHolder>{
-    private FileData[] files;
-    public RecyclerAdapter(FileData[] f) {
-        files=f;
+    private List<FileData> files;
+    private Context context;
+
+    public RecyclerAdapter(List<FileData> files, Context context) {
+        this.files = files;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public itemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context=parent.getContext();
-        int layId=R.layout.storage_item;
-
-        LayoutInflater inflater=LayoutInflater.from(context);
-
-        View view=inflater.inflate(layId,parent,false);
-
-        itemViewHolder viewHolder=new itemViewHolder(view);
-
-        return viewHolder;
-
-
+        return new itemViewHolder(LayoutInflater.from(context).inflate(R.layout.storage_item,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull itemViewHolder holder, int position) {
-        holder.bind(files[position].getName(),false);
+         FileData curOne=files.get(position);
+
+
+
     }
 
     @Override
     public int getItemCount() {
-        return files.length;
+        return files.size();
     }
 
     class itemViewHolder extends RecyclerView.ViewHolder{
 
         TextView nameTextView;
         ImageView typeImage;
+        private ImageButton imageButton;
 
         public itemViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            imageButton=itemView.findViewById(R.id.menuButton);
             nameTextView=itemView.findViewById(R.id.fileName);
             typeImage=itemView.findViewById(R.id.iconView);
-        }
 
-        void bind(String name,boolean type){
-            nameTextView.setText(name);
+
+        }
+    }
+
+    static public int parseType(String str){
+        String extension="";
+        int i=str.lastIndexOf('.');
+        if(i==-1){
+            return 0;
+        }else{
+            extension=str.substring(i+1);
+            if(extension.equals("mp3") || extension.equals("flac") || extension.equals("wav") || extension.equals("alac") || extension.equals("aiff"))
+                return 1;
+            if(extension.equals("png") || extension.equals("bmp") || extension.equals("jpg")|| extension.equals("gif")|| extension.equals("tiff")|| extension.equals("raw")|| extension.equals("psd"))
+                return 2;
+            if(extension.equals("txt") || extension.equals("doc") || extension.equals("pdf")|| extension.equals("docx")|| extension.equals("xls")|| extension.equals("ptt")|| extension.equals("xlsx"))
+                return 2;
         }
     }
 

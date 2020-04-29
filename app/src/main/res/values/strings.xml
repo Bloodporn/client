@@ -7,4 +7,6 @@
     <string name="textview">TextView</string>
     <string name="login">Login</string>
     <string name="name">Name</string>
+    <string name="download">Download:</string>
+    <string name="remove">Remove</string>
 </resources>

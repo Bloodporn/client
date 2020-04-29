@@ -16,7 +16,7 @@
         <item name="buttonText">@color/colorButtonText</item>
         <item name="title">@color/colorTitle</item>
         <item name="linkcolor">@color/linkcol</item>
-        <item name="itemBackColor">@color/white</item>
+        <item name="itemBackColor">@color/purple</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTrans</item>
     </style>
 

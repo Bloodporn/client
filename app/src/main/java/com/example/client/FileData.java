@@ -4,11 +4,18 @@ public class FileData {
     private String name;
     private boolean isPapka;
     private long time;
+    private FileData[] downFolder;
 
     public FileData(String name, boolean isPapka, long time) {
         this.name = name;
         this.isPapka = isPapka;
         this.time = time;
+    }
+    public FileData(String name, boolean isPapka, long time,FileData[] df) {
+        this.name = name;
+        this.isPapka = isPapka;
+        this.time = time;
+        downFolder=df;
     }
 
     public void setName(String name) {
