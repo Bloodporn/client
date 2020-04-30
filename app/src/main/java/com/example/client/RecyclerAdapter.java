@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +36,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final itemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final itemViewHolder holder, final int position) {
          FileData curOne=files.get(position);
          switch (parseType(curOne.getDiskPath())){
              case 0:{
@@ -54,9 +57,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
              }
          }
          holder.nameTextView.setText(curOne.getName());
+
+
+
          holder.menuButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
+                 /*
                  PopupMenu popupMenu=new PopupMenu(context,holder.menuButton);
                  popupMenu.inflate(R.menu.file_menu);
                  popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -76,6 +83,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                      }
                  });
                  popupMenu.show();
+                 */
+                 final BottomSheetDialog bottomSheetDialog=new BottomSheetDialog(context,R.style.BottomSheetDialogTheme);
+                 View bottomSheetView = LayoutInflater.from(context).inflate(
+                         R.layout.bottom_sheet_layout,
+                         (LinearLayout) v.findViewById(R.id.bottomShit)
+                 );
+                 bottomSheetView.findViewById(R.id.OpenFolder).setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Toast.makeText(context,"Open file"+ files.get(position).getName(),Toast.LENGTH_SHORT).show();
+                         bottomSheetDialog.dismiss();
+                     }
+                 });
+                 bottomSheetDialog.setContentView(bottomSheetView);
+                 bottomSheetDialog.show();
              }
 
          });

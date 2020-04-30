@@ -9,4 +9,9 @@
     <string name="name">Name</string>
     <string name="download">Download:</string>
     <string name="remove">Remove</string>
+    <string name="file_name">FILE_NAME</string>
+    <string name="rename">Rename</string>
+    <string name="move">Move</string>
+    <string name="properties">Properties</string>
+    <string name="open_in_folder">Open in folder</string>
 </resources>

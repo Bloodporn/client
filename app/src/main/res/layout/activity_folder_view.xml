@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".FolderView"
     android:padding="4dp"
-    android:background="?attr/itemBackColor"
-    >
+    android:background="?attr/itemBackColor">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/review"
