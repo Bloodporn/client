@@ -2,11 +2,14 @@ package com.example.client;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +33,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull itemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final itemViewHolder holder, int position) {
          FileData curOne=files.get(position);
          switch (parseType(curOne.getDiskPath())){
              case 0:{
@@ -51,6 +54,31 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
              }
          }
          holder.nameTextView.setText(curOne.getName());
+         holder.menuButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 PopupMenu popupMenu=new PopupMenu(context,holder.menuButton);
+                 popupMenu.inflate(R.menu.file_menu);
+                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                     @Override
+                     public boolean onMenuItemClick(MenuItem item) {
+                         switch (item.getItemId()){
+                             case R.id.menu_item_download:{
+                                 Toast.makeText(context,"dowload pressed" + holder.nameTextView.getText(),Toast.LENGTH_SHORT).show();
+                                 break;
+                             }
+                             case R.id.menu_item_remove:{
+                                 Toast.makeText(context,"remove pressed" + holder.nameTextView.getText(),Toast.LENGTH_SHORT).show();
+                                 break;
+                             }
+                         }
+                         return false;
+                     }
+                 });
+                 popupMenu.show();
+             }
+
+         });
 
     }
 
@@ -63,12 +91,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
 
         TextView nameTextView;
         ImageView typeImage;
-        private ImageButton imageButton;
+        private ImageButton menuButton;
 
         public itemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            imageButton=itemView.findViewById(R.id.menuButton);
+            menuButton=itemView.findViewById(R.id.menuButton);
             nameTextView=itemView.findViewById(R.id.fileName);
             typeImage=itemView.findViewById(R.id.iconView);
 
