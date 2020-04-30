@@ -1,25 +1,24 @@
 package com.example.client;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemViewHolder>{
     private List<FileData> files;
     private Context context;
 
-    public RecyclerAdapter(List<FileData> files, Context context) {
+    public RecyclerAdapter(ArrayList<FileData> files, Context context) {
         this.files = files;
         this.context = context;
     }
@@ -33,8 +32,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
     @Override
     public void onBindViewHolder(@NonNull itemViewHolder holder, int position) {
          FileData curOne=files.get(position);
-
-
+         switch (parseType(curOne.getDiskPath())){
+             case 0:{
+                 holder.typeImage.setImageResource(R.drawable.ic_folder_black_24dp);
+                 break;
+             }
+             case 1:{
+                 holder.typeImage.setImageResource(R.drawable.ic_spike_design_guitar_svgrepo_com);
+                 break;
+             }
+             case 2:{
+                 holder.typeImage.setImageResource(R.drawable.ic_photo_svgrepo_com);
+                 break;
+             }
+             case 3:{
+                 holder.typeImage.setImageResource(R.drawable.ic_files_pngrepo_com);
+                 break;
+             }
+         }
+         holder.nameTextView.setText(curOne.getName());
 
     }
 
@@ -72,8 +88,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
             if(extension.equals("png") || extension.equals("bmp") || extension.equals("jpg")|| extension.equals("gif")|| extension.equals("tiff")|| extension.equals("raw")|| extension.equals("psd"))
                 return 2;
             if(extension.equals("txt") || extension.equals("doc") || extension.equals("pdf")|| extension.equals("docx")|| extension.equals("xls")|| extension.equals("ptt")|| extension.equals("xlsx"))
-                return 2;
+                return 3;
         }
+        return -1;
     }
 
 }

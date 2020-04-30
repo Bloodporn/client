@@ -1,25 +1,39 @@
 package com.example.client;
 
 public class FileData {
+    private String diskPath;
     private String name;
     private boolean isPapka;
     private long time;
+
     private FileData[] downFolder;
 
+    /**
+     *
+     * @param name
+     * @param isPapka
+     * @param time
+     */
     public FileData(String name, boolean isPapka, long time) {
-        this.name = name;
+        this.diskPath = name;
+        this.name=diskPath.substring(diskPath.lastIndexOf('\\')+1);
         this.isPapka = isPapka;
         this.time = time;
     }
     public FileData(String name, boolean isPapka, long time,FileData[] df) {
-        this.name = name;
+        this.diskPath = name;
         this.isPapka = isPapka;
         this.time = time;
         downFolder=df;
     }
 
-    public void setName(String name) {
-        this.name = name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setDiskPath(String diskPath) {
+        this.diskPath = diskPath;
     }
 
     public void setPapka(boolean papka) {
@@ -30,8 +44,8 @@ public class FileData {
         this.time = time;
     }
 
-    public String getName() {
-        return name;
+    public String getDiskPath() {
+        return diskPath;
     }
 
     public boolean isPapka() {
