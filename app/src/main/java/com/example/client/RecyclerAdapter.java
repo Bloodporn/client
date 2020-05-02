@@ -2,13 +2,13 @@ package com.example.client;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,16 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemViewHolder>{
-    private List<FileData> files;
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemViewHolder> implements Filterable {
+
     private Context context;
+    private ArrayList<FileData> allFiles;
+    private  ArrayList<FileData> curFiles;
 
     public RecyclerAdapter(ArrayList<FileData> files, Context context) {
-        this.files = files;
         this.context = context;
+        allFiles=new ArrayList<>(files);
+        curFiles=files;
     }
+
 
     @NonNull
     @Override
@@ -37,7 +40,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
 
     @Override
     public void onBindViewHolder(@NonNull final itemViewHolder holder, final int position) {
-         FileData curOne=files.get(position);
+         FileData curOne= curFiles.get(position);
          switch (parseType(curOne.getDiskPath())){
              case 0:{
                  holder.typeImage.setImageResource(R.drawable.ic_folder_black_24dp);
@@ -63,27 +66,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
          holder.menuButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 /*
-                 PopupMenu popupMenu=new PopupMenu(context,holder.menuButton);
-                 popupMenu.inflate(R.menu.file_menu);
-                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                     @Override
-                     public boolean onMenuItemClick(MenuItem item) {
-                         switch (item.getItemId()){
-                             case R.id.menu_item_download:{
-                                 Toast.makeText(context,"dowload pressed" + holder.nameTextView.getText(),Toast.LENGTH_SHORT).show();
-                                 break;
-                             }
-                             case R.id.menu_item_remove:{
-                                 Toast.makeText(context,"remove pressed" + holder.nameTextView.getText(),Toast.LENGTH_SHORT).show();
-                                 break;
-                             }
-                         }
-                         return false;
-                     }
-                 });
-                 popupMenu.show();
-                 */
                  final BottomSheetDialog bottomSheetDialog=new BottomSheetDialog(context,R.style.BottomSheetDialogTheme);
                  View bottomSheetView = LayoutInflater.from(context).inflate(
                          R.layout.bottom_sheet_layout,
@@ -92,7 +74,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                  bottomSheetView.findViewById(R.id.OpenFolder).setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         Toast.makeText(context,"Open file"+ files.get(position).getName(),Toast.LENGTH_SHORT).show();
+                         Toast.makeText(context,"Open file"+ curFiles.get(position).getName(),Toast.LENGTH_SHORT).show();
                          bottomSheetDialog.dismiss();
                      }
                  });
@@ -106,8 +88,46 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
 
     @Override
     public int getItemCount() {
-        return files.size();
+        return curFiles.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return itemFilter;
+    }
+
+    private Filter itemFilter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<FileData> sortedData=new ArrayList<>();
+            if(constraint==null || constraint.length()==0){
+                sortedData.addAll(allFiles);
+            }else{
+                String sortPattern=constraint.toString().toLowerCase().trim();
+                for(FileData item: allFiles){
+                    if(item.getName().toLowerCase().trim().contains(sortPattern)){
+                        sortedData.add(item);
+                    }
+                }
+            }
+            FilterResults results=new FilterResults();
+            results.values=sortedData;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            curFiles.clear();
+            curFiles.addAll((ArrayList)results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+
+
+
+
+
 
     class itemViewHolder extends RecyclerView.ViewHolder{
 

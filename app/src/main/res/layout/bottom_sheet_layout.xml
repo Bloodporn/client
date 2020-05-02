@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/bottomShit"
     android:background="@drawable/bottom_sheet_background">
+
     <TextView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_background"
         android:gravity="center"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="@string/file_name"
-        android:textColor="?attr/text"
+
+        android:textColor="?attr/maintext"
         android:textSize="18dp"
 
         />
@@ -21,6 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/rename"
         android:textAllCaps="false"
+
         android:padding="10dp"
         android:background="@android:color/transparent"
         android:textAlignment="viewStart" />

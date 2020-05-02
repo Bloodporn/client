@@ -2,14 +2,15 @@
 <resources>
     <declare-styleable name="ds">
         <attr name="backgroundColor" format="color"/>
-        <attr name="statusBar" format="color"/>
-        <attr name="navigBar" format="color"/>
-        <attr name="text" format="color"/>
-        <attr name="hint" format="color"/>
-        <attr name="button" format="color"/>
+        <attr name="backgroundNavigBar" format="color"/>
+        <attr name="maintext" format="color"/>
+        <attr name="titleTextColor" format="color"/>
+        <attr name="hinttext" format="color"/>
+        <attr name="backgroundButton" format="color"/>
         <attr name="buttonText" format="color"/>
-        <attr name="titlebar" format="color"/>
-        <attr name="linkcolor" format="color"/>
-        <attr name="itemBackColor" format="color"/>
+        <attr name="backgroundTitle" format="color"/>
+        <attr name="linltext" format="color"/>
+        <attr name="vectorColor" format="color"/>
+        <attr name="backgroundBar" format="color"/>
     </declare-styleable>
 </resources>

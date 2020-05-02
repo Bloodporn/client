@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#431D631C</color>
-    <color name="colorAccent">#1135FA</color>
-    <color name="colorButton">#3F7A74</color>
-    <color name="colorRegText">#3F6763</color>
-    <color name="colorButtonText">#1F332B</color>
-    <color name="colorHintText">#3F6763</color>
-    <color name="colorTitle">#3F6763</color>
-    <color name="white">#ffffff</color>
-    <color name="purple">#43477046</color>
-    <color name="colorStatusBar">#431D631C</color>
-    <color name="colorNavigationBar">#431D631C</color>
-    <color name="linkcol">#03A9F4</color>
-    <color name="itemBackCol">#2C2C2C</color>
+
+
+
+    <color name="backgroundDay">#BAC6AC</color>
+    <color name="backgroundNight">#BAC6AC</color>
+
+    <color name="titleTextDay">#000000</color>
+    <color name="titleTextNight">#000000</color>
+
+    <color name="hintTextDay">#878282</color>
+    <color name="hintTextNight">#878282</color>
+
+    <color name="mainTextDay">#353535</color>
+    <color name="mainTextNight">#353535</color>
+
+    <color name="linkTextDay">#1462FD</color>
+    <color name="linkTextNight">#1462FD</color>
+
+    <color name="buttonbackgroundDay">#4CAF50</color>
+    <color name="buttonbackgroundNight">#20ACD6</color>
+
+    <color name="vectorDay">#B14646</color>
+    <color name="vectorNight">#B14646</color>
+
+
+
+    <color name="backgroundNavigBarDay">#8BC34A</color>
+    <color name="backgroundNavigBarNight">#8BC34A</color>
+
 </resources>

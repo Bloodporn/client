@@ -3,57 +3,30 @@ package com.example.client;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
+import android.view.Menu;
 import android.view.MenuItem;
-
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.appcompat.widget.SearchView;
-
-import androidx.recyclerview.widget.DividerItemDecoration;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import androidx.recyclerview.widget.RecyclerView;
-
-
-
-import android.os.Bundle;
-
-import android.view.Menu;
-
-import android.view.MenuItem;
-
-
-
-
-
-
-
-
-public class FolderView extends AppCompatActivity {
-
+public class FolderViewFav extends AppCompatActivity {
+static boolean isActive=false;
     private RecyclerView recyclerView;
     private RecyclerAdapter recadapter;
-
-    static boolean isActive=false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder_view);
-
+        isActive=true;
         ActionBar actionBar;
 
 
@@ -87,18 +60,19 @@ public class FolderView extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
         bottomNavigationView.setSelectedItemId(R.id.home);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+  bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.home:{
-                        return true;
+                        Intent i = new Intent(getApplicationContext(), FolderView.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                        finish();
                     }
                     case R.id.important:{
-                        Intent i = new Intent(getApplicationContext(), FolderViewFav.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                        startActivity(i);
-                        break;
+                        return true;
                     }
                 }
                 return false;
@@ -134,38 +108,23 @@ public class FolderView extends AppCompatActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
-
-
-
-
-
-
-
-
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-
-        MenuItem item=menu.findItem(R.id.action_search);
-        SearchView searchView=(SearchView) item.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                recadapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
-        return true;
     }
-    */
-
 }
+/*
+*  bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.home:{
+                        Intent i = new Intent(getApplicationContext(), FolderView.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                        finish();
+                    }
+                    case R.id.important:{
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });*/
