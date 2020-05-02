@@ -108,7 +108,7 @@ static boolean isActive=false;
         });
         return super.onCreateOptionsMenu(menu);
     }
-    }
+
 }
 /*
 *  bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
