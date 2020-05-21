@@ -4,7 +4,7 @@
     <!-- Light mode -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="backgroundColor">@color/backgroundDay</item>
+        <item name="backgroundColor">#67705C</item>
         <item name="titleTextColor">@color/titleTextDay</item>
         <item name="hinttext">@color/hintTextDay</item>
         <item name="maintext">@color/mainTextDay</item>
@@ -12,6 +12,7 @@
         <item name="backgroundButton">@color/buttonbackgroundDay</item>
         <item name="vectorColor">@color/vectorDay</item>
         <item name="backgroundNavigBar">@color/backgroundNavigBarDay</item>
+        <item name="android:navigationBarColor">#00878282</item>
     </style>
 
 

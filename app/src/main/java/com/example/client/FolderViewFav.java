@@ -27,10 +27,8 @@ static boolean isActive=false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder_view);
         isActive=true;
-        ActionBar actionBar;
 
-
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();;
 
         // Define ColorDrawable object and parse color
         // using parseColor method

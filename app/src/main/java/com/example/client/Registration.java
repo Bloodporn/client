@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +21,23 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration2);
 
-        registration=findViewById(R.id.buttonReg);
+
+
+        getSupportActionBar().hide();
+        ExternalFunc.setStatusBarGradiant(this);
+
+        RotateAnimation rotateAnimation = new RotateAnimation(360f, 0f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+
+        rotateAnimation.setInterpolator(new LinearInterpolator());
+        rotateAnimation.setDuration(2000);
+        rotateAnimation.setRepeatCount(Animation.INFINITE);
+        findViewById(R.id.BOLT2).startAnimation(rotateAnimation);
+
+
+        registration=findViewById(R.id.registrbutton);
+
 
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
