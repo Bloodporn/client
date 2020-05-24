@@ -9,13 +9,10 @@
     <TextView
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom_sheet_background"
+        android:layout_height="48dp"
         android:gravity="center"
-        android:padding="10dp"
         android:text="@string/file_name"
-
-        android:textColor="?attr/maintext"
+        android:textColor="@android:color/holo_red_dark"
         android:textSize="18dp"
 
         />
@@ -26,9 +23,9 @@
         android:layout_height="wrap_content"
         android:text="@string/rename"
         android:textAllCaps="false"
-
+        android:textColor="@android:color/holo_red_dark"
         android:padding="10dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/sheettextview"
         android:textAlignment="viewStart" />
 
     <Button
@@ -36,9 +33,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/move"
+        android:textColor="@android:color/holo_red_dark"
         android:textAllCaps="false"
         android:padding="10dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/sheettextview"
         android:textAlignment="viewStart"/>
 
     <Button
@@ -47,18 +45,26 @@
         android:layout_height="wrap_content"
         android:text="@string/properties"
         android:textAllCaps="false"
+        android:textColor="@android:color/holo_red_dark"
         android:padding="10dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/sheettextview"
         android:textAlignment="viewStart"/>
 
     <Button
         android:id="@+id/OpenFolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
         android:text="@string/open_in_folder"
         android:textAllCaps="false"
         android:padding="10dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/sheettextview"
         android:textAlignment="viewStart"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+
+        android:layout_height="143dp" />
 
 </LinearLayout>

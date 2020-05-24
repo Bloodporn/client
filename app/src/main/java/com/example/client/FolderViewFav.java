@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,20 +29,17 @@ static boolean isActive=false;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder_view);
-        isActive=true;
+        ActionBar actionBar= getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.navigbar)));
 
-        ActionBar actionBar = getSupportActionBar();;
-
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.backgroundNavigBarDay));
-
-        // Set BackgroundDrawable
-        actionBar.setBackgroundDrawable(colorDrawable);
+        Window window=this.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        ExternalFunc.setStatusBarGradiant(this,R.color.navigbar);
 
 
-        isActive=true;
+
         Random rng=new Random();
         ArrayList<FileData> files= new ArrayList<>();
         files.add(new FileData("music.mp3",false,123));
@@ -56,7 +56,8 @@ static boolean isActive=false;
         files.add(new FileData("shakal.flac",false,123));
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.important);
+        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.navigbar));
 
 
   bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,6 +68,7 @@ static boolean isActive=false;
                         Intent i = new Intent(getApplicationContext(), FolderView.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(i);
+                        //overridePendingTransition(R.anim.right_in,R.anim.right_in);
                         finish();
                     }
                     case R.id.important:{

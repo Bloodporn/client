@@ -7,7 +7,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:context=".FolderView"
-    android:background="?attr/backgroundColor">
+    android:background="#F6F5E7"
+    android:id="@+id/back1"
+   >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/review"
         android:layout_width="match_parent"
@@ -20,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:background="@android:color/black"
+        app:background="@color/navigbar"
         app:itemIconTint="@drawable/for_navig"
         app:itemTextColor="@drawable/for_navig"
         app:menu="@menu/navig_menu">

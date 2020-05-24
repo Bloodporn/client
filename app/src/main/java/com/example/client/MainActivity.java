@@ -13,6 +13,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -56,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
         rotateAnimation.setDuration(2000);
         rotateAnimation.setRepeatCount(Animation.INFINITE);
         findViewById(R.id.BOLT1).startAnimation(rotateAnimation);
-
-
+        Window window=this.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
 
         buttonLog=findViewById(R.id.buttonlog);
@@ -100,18 +103,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
 }

@@ -2,9 +2,11 @@ package com.example.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -35,7 +37,10 @@ public class Registration extends AppCompatActivity {
         rotateAnimation.setRepeatCount(Animation.INFINITE);
         findViewById(R.id.BOLT2).startAnimation(rotateAnimation);
 
-
+        Window window=this.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         registration=findViewById(R.id.registrbutton);
 
 

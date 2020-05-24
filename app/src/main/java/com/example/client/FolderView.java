@@ -1,12 +1,16 @@
 package com.example.client;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.view.MenuItem;
@@ -34,12 +38,8 @@ import android.os.Bundle;
 import android.view.Menu;
 
 import android.view.MenuItem;
-
-
-
-
-
-
+import android.view.View;
+import android.view.Window;
 
 
 public class FolderView extends AppCompatActivity {
@@ -49,26 +49,24 @@ public class FolderView extends AppCompatActivity {
 
     static boolean isActive=false;
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder_view);
 
-        ActionBar actionBar;
 
 
-        actionBar = getSupportActionBar();
 
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.backgroundNavigBarDay));
+        ActionBar actionBar= getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.navigbar)));
 
-        // Set BackgroundDrawable
-        actionBar.setBackgroundDrawable(colorDrawable);
+        Window window=this.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        ExternalFunc.setStatusBarGradiant(this,R.color.navigbar);
 
-
-        isActive=true;
         Random rng=new Random();
         ArrayList<FileData> files= new ArrayList<>();
         files.add(new FileData("music.mp3",false,123));
@@ -86,6 +84,7 @@ public class FolderView extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
         bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.navigbar));
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -98,6 +97,10 @@ public class FolderView extends AppCompatActivity {
                         Intent i = new Intent(getApplicationContext(), FolderViewFav.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                         startActivity(i);
+                        //overridePendingTransition(R.anim.left_out,R.anim.left_out);
+
+                        //{Хз нужена ли еще одна активность под избранное или просто ребилднем рекуклер как вариант
+
                         break;
                     }
                 }
@@ -109,7 +112,6 @@ public class FolderView extends AppCompatActivity {
 
         recyclerView=findViewById(R.id.review);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
-
         recyclerView.setLayoutManager(gridLayoutManager);
         recadapter=new RecyclerAdapter(files,this);
         recyclerView.setAdapter(recadapter);
