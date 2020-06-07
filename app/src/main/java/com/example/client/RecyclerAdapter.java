@@ -25,23 +25,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
     private ArrayList<FileData> allFiles;
     private  ArrayList<FileData> curFiles;
 
-    public RecyclerAdapter(ArrayList<FileData> files, Context context) {
+    RecyclerAdapter(ArrayList<FileData> files, Context context) {
         this.context = context;
         allFiles=new ArrayList<>(files);
         curFiles=files;
     }
 
+    void swithcData(ArrayList<FileData> a){
+        allFiles=new ArrayList<>(a);
+        curFiles=new ArrayList<>(a);;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
     public itemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new itemViewHolder(LayoutInflater.from(context).inflate(R.layout.storage_item,parent,false));
+        return new itemViewHolder(LayoutInflater.from(context).inflate(R.layout.storage_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull final itemViewHolder holder, final int position) {
          FileData curOne= curFiles.get(position);
-         switch (parseType(curOne.getDiskPath())){
+         switch (parseType(curOne.name)){
              case 0:{
                  holder.typeImage.setImageResource(R.drawable.ic_folder_black_24dp);
                  break;
@@ -59,9 +64,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                  break;
              }
          }
-         holder.nameTextView.setText(curOne.getName());
+         holder.nameTextView.setText(curOne.name);
 
-
+            holder.typeImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context,"Тут ты пытаешься скачать файл"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
+                }
+            });
 
          holder.menuButton.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -74,7 +84,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                  bottomSheetView.findViewById(R.id.OpenFolder).setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         Toast.makeText(context,"Open file"+ curFiles.get(position).getName(),Toast.LENGTH_SHORT).show();
+                         Toast.makeText(context,"Open file"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
+                         bottomSheetDialog.dismiss();
+                     }
+                 });
+                 bottomSheetView.findViewById(R.id.Rename).setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Toast.makeText(context,"Rename file"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
+                         bottomSheetDialog.dismiss();
+                     }
+                 });
+                 bottomSheetView.findViewById(R.id.Move).setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Toast.makeText(context,"Move file"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
+                         bottomSheetDialog.dismiss();
+                     }
+                 });
+                 bottomSheetView.findViewById(R.id.Prop).setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Toast.makeText(context,"Propertoes file"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
                          bottomSheetDialog.dismiss();
                      }
                  });
@@ -105,7 +136,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
             }else{
                 String sortPattern=constraint.toString().toLowerCase().trim();
                 for(FileData item: allFiles){
-                    if(item.getName().toLowerCase().trim().contains(sortPattern)){
+                    if(item.name.toLowerCase().trim().contains(sortPattern)){
                         sortedData.add(item);
                     }
                 }
@@ -129,13 +160,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
 
 
 
-    class itemViewHolder extends RecyclerView.ViewHolder{
+    static class itemViewHolder extends RecyclerView.ViewHolder{
 
         TextView nameTextView;
         ImageView typeImage;
         private ImageButton menuButton;
 
-        public itemViewHolder(@NonNull View itemView) {
+        itemViewHolder(@NonNull View itemView) {
             super(itemView);
 
             menuButton=itemView.findViewById(R.id.menuButton);
@@ -146,7 +177,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
         }
     }
 
-    static public int parseType(String str){
+    private static int parseType(String str){
         String extension="";
         int i=str.lastIndexOf('.');
         if(i==-1){

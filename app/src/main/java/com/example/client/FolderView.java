@@ -6,6 +6,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,25 +43,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+import android.widget.Toast;
 
 
 public class FolderView extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recadapter;
-
-    static boolean isActive=false;
+    SqlService sql;
+    static boolean isActive1=true;
+    static boolean isActive2=false;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder_view);
+        sql = new SqlService(this);
 
 
 
-
-        ActionBar actionBar= getSupportActionBar();
+        final ActionBar actionBar= getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.navigbar)));
 
         Window window=this.getWindow();
@@ -68,40 +75,68 @@ public class FolderView extends AppCompatActivity {
         ExternalFunc.setStatusBarGradiant(this,R.color.navigbar);
 
         Random rng=new Random();
-        ArrayList<FileData> files= new ArrayList<>();
-        files.add(new FileData("music.mp3",false,123));
-        files.add(new FileData("papka",false,123));
-        files.add(new FileData("papka2",false,123));
-        files.add(new FileData("shakal.jpg",false,123));
-        files.add(new FileData("shakal.png",false,123));
-        files.add(new FileData("kyrsak.docx",false,123));
-        files.add(new FileData("kyrsak.pdf",false,123));
-        files.add(new FileData("shakal.flac",false,123));
-        files.add(new FileData("shakal.png",false,123));
-        files.add(new FileData("kyrsak.docx",false,123));
-        files.add(new FileData("kyrsak.pdf",false,123));
-        files.add(new FileData("shakal.flac",false,123));
+        final ArrayList<FileData> files= new ArrayList<>();
+        files.add(new FileData(0,"music.mp3",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(0,"mudassic.mp3",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(0,"musdsadic.mp3",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(0,"music.mp3",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(1,"musasdic",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(1,"muszxic",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(0,"music.jpg",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(0,"music.doc",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(0,"music.doc",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(0,"muaaaaasic.png",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        sql.insertData(files);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
+
+
+
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
+        final View all = findViewById(R.id.home);
+        final View fav = findViewById(R.id.important);
         bottomNavigationView.setSelectedItemId(R.id.home);
+        all.setAlpha(1);
+        fav.setAlpha(0.8f);
         bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.navigbar));
+
+        recyclerView=findViewById(R.id.review);
+        int resId1 = R.anim.anim1_layout;
+        int resId2 = R.anim.anim2_lauout;
+        final LayoutAnimationController animation1 = AnimationUtils.loadLayoutAnimation(this,resId1);
+        final LayoutAnimationController animation2 = AnimationUtils.loadLayoutAnimation(this,resId2);
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.home:{
-                        return true;
+                        if(!isActive1){
+                            all.setAlpha(1);
+                            fav.setAlpha(0.8f);
+                            recadapter.swithcData(files);
+                            recyclerView.setLayoutAnimation(animation2);
+                            recyclerView.scheduleLayoutAnimation();
+                            actionBar.setTitle("All of your data");
+                            isActive2=false;
+                            isActive1=true;
+                            return true;
+                        }
+                        return false;
                     }
                     case R.id.important:{
-                        Intent i = new Intent(getApplicationContext(), FolderViewFav.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                        startActivity(i);
-                        //overridePendingTransition(R.anim.left_out,R.anim.left_out);
-
-                        //{Хз нужена ли еще одна активность под избранное или просто ребилднем рекуклер как вариант
-
-                        break;
+                        if(!isActive2){
+                            all.setAlpha(0.8f);
+                            fav.setAlpha(1);
+                            recadapter.swithcData(files);
+                            recyclerView.setLayoutAnimation(animation1);
+                            recyclerView.scheduleLayoutAnimation();
+                            actionBar.setTitle("All of important your data");
+                            isActive1=false;
+                            isActive2=true;
+                            return true;
+                        }
+                       return false;
                     }
                 }
                 return false;
@@ -110,10 +145,12 @@ public class FolderView extends AppCompatActivity {
 
 
 
-        recyclerView=findViewById(R.id.review);
+
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recadapter=new RecyclerAdapter(files,this);
+
         recyclerView.setAdapter(recadapter);
     }
     SearchView searchView;
@@ -133,6 +170,7 @@ public class FolderView extends AppCompatActivity {
                 recadapter.getFilter().filter(newText);
                 return true;
             }
+
         });
         return super.onCreateOptionsMenu(menu);
     }
