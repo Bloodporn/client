@@ -86,7 +86,10 @@ public class FolderView extends AppCompatActivity {
         files.add(new FileData(0,"music.doc",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
         files.add(new FileData(0,"music.doc",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
         files.add(new FileData(0,"muaaaaasic.png",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
+        files.add(new FileData(0,"muaaaaasic.png",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
         sql.insertData(files);
+
+
 
 
 
