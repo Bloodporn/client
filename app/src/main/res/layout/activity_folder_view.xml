@@ -10,6 +10,18 @@
     android:background="#F6F5E7"
     android:id="@+id/back1"
    >
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/review"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="22dp"
+        android:id="@+id/fab"
+        app:backgroundTint="@color/navigbar"
+        android:src="@drawable/ic_add_black_24dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/review"
         android:layout_width="match_parent"
@@ -25,8 +37,9 @@
         app:background="@color/navigbar"
         app:itemIconTint="@drawable/for_navig"
         app:itemTextColor="@drawable/for_navig"
-        app:menu="@menu/navig_menu">
+        app:menu="@menu/navig_menu"/>
 
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.example.client;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +71,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
             holder.typeImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
+
+
                     Toast.makeText(context,"Тут ты пытаешься скачать файл"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
                 }
             });
