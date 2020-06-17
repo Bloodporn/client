@@ -48,11 +48,11 @@
             android:id="@+id/menuButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="7dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="1dp"
             android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_more_vert_black_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

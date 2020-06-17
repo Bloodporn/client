@@ -1,8 +1,6 @@
 package com.example.client;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,28 +13,48 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.client.Files.FileData;
+import com.example.client.Files.Tree;
+import com.example.client.Files.TreeItem;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemViewHolder> implements Filterable {
 
     private Context context;
-    private ArrayList<FileData> allFiles;
-    private  ArrayList<FileData> curFiles;
+    private Tree tree;
+    private ArrayList<FileData> cur;
+    private ActionBar actionBar;
 
-    RecyclerAdapter(ArrayList<FileData> files, Context context) {
+    RecyclerAdapter(Tree files, Context context, ActionBar actionBar) {
         this.context = context;
-        allFiles=new ArrayList<>(files);
-        curFiles=files;
+        this.tree = files;
+        this.actionBar = actionBar;
+        cur = new ArrayList<>();
+        for (TreeItem item: tree.getCur().getChildren()) {
+            cur.add(item.getValue());
+        };
     }
 
-    void swithcData(ArrayList<FileData> a){
-        allFiles=new ArrayList<>(a);
-        curFiles=new ArrayList<>(a);;
-        notifyDataSetChanged();
+    public Tree getTree() {
+        return tree;
+    }
+
+
+    public void goToParent() {
+        if (!isRoot()) {
+            tree.setCur(tree.getCur().getParent());
+            notifyDataSetChanged();
+        }
+    }
+
+    public boolean isRoot() {
+        return tree.getCur().getParent() == null;
     }
 
     @NonNull
@@ -47,10 +65,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
 
     @Override
     public void onBindViewHolder(@NonNull final itemViewHolder holder, final int position) {
-         FileData curOne= curFiles.get(position);
+         FileData curOne= tree.getCur().getChildren().get(position).getValue();
          switch (parseType(curOne.name)){
              case 0:{
                  holder.typeImage.setImageResource(R.drawable.ic_folder_black_24dp);
+                 holder.typeImage.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         tree.setCur(tree.getCur().getChildren().get(position));
+                         if (!isRoot()) {
+                             if (actionBar != null) {
+                                 actionBar.setDisplayHomeAsUpEnabled(true);
+                                 actionBar.setHomeButtonEnabled(true);
+                             }
+                         }
+                         notifyDataSetChanged();
+                     }
+                 });
                  break;
              }
              case 1:{
@@ -68,17 +99,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
          }
          holder.nameTextView.setText(curOne.name);
 
-            holder.typeImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-
-
-                    Toast.makeText(context,"Тут ты пытаешься скачать файл"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
-                }
-            });
-
          holder.menuButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -90,28 +110,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                  bottomSheetView.findViewById(R.id.OpenFolder).setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         Toast.makeText(context,"Open file"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
+                         Toast.makeText(context,"Open file"+ tree.getCur().getChildren().get(position).getValue().name,Toast.LENGTH_SHORT).show();
                          bottomSheetDialog.dismiss();
                      }
                  });
                  bottomSheetView.findViewById(R.id.Rename).setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         Toast.makeText(context,"Rename file"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
+                         Toast.makeText(context,"Rename file"+ tree.getCur().getChildren().get(position).getValue().name,Toast.LENGTH_SHORT).show();
                          bottomSheetDialog.dismiss();
                      }
                  });
                  bottomSheetView.findViewById(R.id.Move).setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         Toast.makeText(context,"Move file"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
+                         Toast.makeText(context,"Move file"+ tree.getCur().getChildren().get(position).getValue().name,Toast.LENGTH_SHORT).show();
                          bottomSheetDialog.dismiss();
                      }
                  });
                  bottomSheetView.findViewById(R.id.Prop).setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         Toast.makeText(context,"Propertoes file"+ curFiles.get(position).name,Toast.LENGTH_SHORT).show();
+                         Toast.makeText(context,"Propertoes file"+ tree.getCur().getChildren().get(position).getValue().name,Toast.LENGTH_SHORT).show();
                          bottomSheetDialog.dismiss();
                      }
                  });
@@ -125,7 +145,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
 
     @Override
     public int getItemCount() {
-        return curFiles.size();
+        return tree.getCur().getChildren().size();
     }
 
     @Override
@@ -136,13 +156,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
     private Filter itemFilter=new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<FileData> sortedData=new ArrayList<>();
+            ArrayList<TreeItem> sortedData=new ArrayList<>();
             if(constraint==null || constraint.length()==0){
-                sortedData.addAll(allFiles);
+                sortedData.addAll(tree.getCur().getChildren());
             }else{
                 String sortPattern=constraint.toString().toLowerCase().trim();
-                for(FileData item: allFiles){
-                    if(item.name.toLowerCase().trim().contains(sortPattern)){
+                for(TreeItem item: tree.getCur().getChildren()){
+                    if(item.getValue().name.toLowerCase().trim().contains(sortPattern)){
                         sortedData.add(item);
                     }
                 }
@@ -154,8 +174,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            curFiles.clear();
-            curFiles.addAll((ArrayList)results.values);
+            tree.getCur().getChildren().clear();
+            tree.getCur().getChildren().addAll((ArrayList)results.values);
             notifyDataSetChanged();
         }
     };
@@ -199,5 +219,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
         }
         return -1;
     }
+
+
 
 }

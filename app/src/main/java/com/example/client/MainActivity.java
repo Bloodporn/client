@@ -30,6 +30,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.client.connection.NetworkServiceMessage;
+import com.example.client.connection.Request;
+import com.example.client.connection.Response;
+import com.example.client.dataclient.DataClient;
+
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MainActivity extends AppCompatActivity {
@@ -75,23 +80,20 @@ public class MainActivity extends AppCompatActivity {
                 String log,pass;
                 log=login.getText().toString();
                 pass=password.getText().toString();
-                if(pass.equals("")){
-                    Toast.makeText(MainActivity.this,"Bad pass",Toast.LENGTH_SHORT).show();
-                }else
-                if(log.equals("")){
-                    Toast.makeText(MainActivity.this,"Bad login",Toast.LENGTH_SHORT).show();
-                }else {
+                if (pass.equals("") || log.equals("")) {
+                    Toast.makeText(MainActivity.this,"Заполните все поля",Toast.LENGTH_SHORT).show();
+                } else {
+                    DataClient.login = log;
+                    DataClient.password = pass;
                     Toast.makeText(MainActivity.this, "Nice dick", Toast.LENGTH_SHORT).show();
-
+                    Request request = new Request("AUTHORIZATION",101);
+                    Authorization authorization = new Authorization(request);
+                    authorization.execute();
 
                     /*
                      *<-- Authorization -->
                      */
                 }
-                Intent i = new Intent(MainActivity.this,FolderView.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                finish();
 
             }
         });
@@ -103,5 +105,33 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+
+    class Authorization extends NetworkServiceMessage {
+
+        public Authorization(Request request) {
+            super(request);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @SuppressLint("ShowToast")
+        @Override
+        protected void onPostExecute(Response response) {
+            super.onPostExecute(response);
+            if (response.isValidCode()) {
+                DataClient.parseTreeFromResponse(response.getText());
+                Intent i = new Intent(MainActivity.this,FolderView.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                finish();
+            } else {
+                Toast.makeText(MainActivity.this,"Неправильный логин или пароль", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

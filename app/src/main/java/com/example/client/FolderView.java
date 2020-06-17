@@ -8,11 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,30 +17,22 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 
+import com.example.client.Files.FileData;
+import com.example.client.Files.Tree;
+import com.example.client.Files.TreeItem;
+import com.example.client.dataclient.DataClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
-
-import androidx.appcompat.app.AppCompatActivity;
+import java.util.regex.Pattern;
 
 import androidx.appcompat.widget.SearchView;
 
-import androidx.recyclerview.widget.DividerItemDecoration;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import androidx.recyclerview.widget.RecyclerView;
-
-
-
-import android.os.Bundle;
 
 import android.view.Menu;
 
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
@@ -77,24 +66,16 @@ public class FolderView extends AppCompatActivity {
         }
         ExternalFunc.setStatusBarGradiant(this,R.color.navigbar);
 
-        Random rng=new Random();
-        final ArrayList<FileData> files= new ArrayList<>();
-        files.add(new FileData(0,"music.mp3",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(0,"mudassic.mp3",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(0,"musdsadic.mp3",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(0,"music.mp3",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(1,"musasdic",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(1,"muszxic",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(0,"music.jpg",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(0,"music.doc",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(0,"music.doc",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(0,"muaaaaasic.png",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        files.add(new FileData(0,"muaaaaasic.png",System.currentTimeMillis(),"parentIsNigga",1,123456,"aloGdeDengi?"));
-        sql.insertData(files);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setHomeButtonEnabled(false);
+        }
 
-
-
-
+        Tree tree = new Tree();
+        if (DataClient.tree != null) {
+            Pattern pattern = Pattern.compile("\n");
+            parseTree(tree.getRoot(), pattern.split(DataClient.tree), new Index(0), 0);
+        }
 
 
         final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
@@ -112,7 +93,8 @@ public class FolderView extends AppCompatActivity {
         final LayoutAnimationController animation2 = AnimationUtils.loadLayoutAnimation(this,resId2);
 
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        /*bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
@@ -147,7 +129,7 @@ public class FolderView extends AppCompatActivity {
                 }
                 return false;
             }
-        });
+        });*/
 
 
 
@@ -155,7 +137,7 @@ public class FolderView extends AppCompatActivity {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recadapter=new RecyclerAdapter(files,this);
+        recadapter=new RecyclerAdapter(tree,this, getSupportActionBar());
         recyclerView.setAdapter(recadapter);
         fab= findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -201,7 +183,7 @@ public class FolderView extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                recadapter.getFilter().filter(newText);
+                //recadapter.getFilter().filter(newText);
                 return true;
             }
 
@@ -248,4 +230,58 @@ public class FolderView extends AppCompatActivity {
     }
     */
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                recadapter.goToParent();
+                if (recadapter.isRoot()) {
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                        getSupportActionBar().setHomeButtonEnabled(false);
+                    }
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class Index
+    {
+        public int index;
+
+        public Index(int index)
+        {
+            this.index = index;
+        }
+    }
+
+    private void parseTree(TreeItem root, String[] strings, Index index, int rank) {
+        Pattern pattern;
+
+        TreeItem newRoot = root;
+        while (index.index != strings.length) {
+            pattern = Pattern.compile("\t");
+            String[] stringsItem = pattern.split(strings[index.index]);
+            if (Integer.parseInt(stringsItem[0]) > rank) {
+                parseTree(newRoot, strings, index, rank + 1);
+                continue;
+            } else if (Integer.parseInt(stringsItem[0]) < rank) {
+                return;
+            } else {
+                pattern = Pattern.compile("\\\\");
+                String[] regex = pattern.split(stringsItem[2]);
+                boolean type = regex[0].equals("-1") ? true : false;
+                String size = regex[0].equals("-1") ? "0" : regex[0];
+                TreeItem newItem = null;
+                regex[1] = regex[1].replace("T", " ");
+                regex[1] = regex[1].substring(0, regex[1].length() - 8);
+                newItem = new TreeItem(new FileData(type, stringsItem[1], regex[1], Long.parseLong(size)), root);
+                root.getChildren().add(newItem);
+                newRoot = newItem;
+            }
+            index.index++;
+        }
+    }
 }

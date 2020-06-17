@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.client.Files.FileData;
+
 import java.util.ArrayList;
 
 public class SqlService extends SQLiteOpenHelper {
@@ -47,10 +49,10 @@ public class SqlService extends SQLiteOpenHelper {
             cv.put(COL_1,x.isPapka);
             cv.put(COL_2, x.name);
             cv.put(COL_3, x.time);
-            cv.put(COL_4, x.parent);
-            cv.put(COL_5, x.fav);
+            //cv.put(COL_4, x.parent);
+            //cv.put(COL_5, x.fav);
             cv.put(COL_6, x.size);
-            cv.put(COL_7, x.truePath);
+            //cv.put(COL_7, x.truePath);
             db.insert(TABLE_NAME , null,cv);
             cv.clear();
         }
@@ -61,9 +63,9 @@ public class SqlService extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from " + TABLE_NAME, null);
         ArrayList<FileData> fd = new ArrayList<>();
         while(cursor.moveToNext()){
-            fd.add(new FileData(cursor.getInt(0), cursor.getString(1),
-                    cursor.getLong(2),cursor.getString(3),cursor.getInt(4),
-                    cursor.getLong(5),cursor.getString(6)));
+            //fd.add(new FileData(cursor.getInt(0), cursor.getString(1),
+            //        cursor.getLong(2),cursor.getString(3),cursor.getInt(4),
+            //        cursor.getLong(5),cursor.getString(6)));
         }
         cursor.close();
         return fd;
