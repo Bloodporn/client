@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.client.Files.FileData;
 import com.example.client.Files.Tree;
 import com.example.client.Files.TreeItem;
+import com.example.client.connection.Request;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
@@ -111,6 +112,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                      @Override
                      public void onClick(View v) {
                          Toast.makeText(context,"Open file"+ tree.getCur().getChildren().get(position).getValue().name,Toast.LENGTH_SHORT).show();
+
+                         //TODO
+                         Request request = new Request(
+                                 "UPLOAD",
+                                 tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
+                                 201);
+
                          bottomSheetDialog.dismiss();
                      }
                  });
