@@ -67,6 +67,12 @@ public class FolderView extends AppCompatActivity {
         setContentView(R.layout.activity_folder_view);
         sql = new SqlService(this);
 
+        int permissionCheck = ContextCompat.checkSelfPermission(FolderView.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(FolderView.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 26);
+        }
+
         File storage = new File (Environment.getDataDirectory()+File.separator+"BOLT");
         if(!storage.exists())
             storage.mkdirs();
@@ -196,6 +202,8 @@ public class FolderView extends AppCompatActivity {
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     upload();
                 }
+            case 26:
+                if (!((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)))
                 break;
             default:
                 break;

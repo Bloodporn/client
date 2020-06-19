@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
 
+import com.example.client.R;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -22,13 +24,13 @@ public class DownloadFile extends NetworkServiceFileDownload {
     Integer notificationID = 100;
     public DownloadFile(File file, boolean isFile, Request request, String nameFile, Context c) {
         super(file, isFile, request, nameFile);
-        context=c;
+        context = c;
     }
 
     //file - сразу созданный файл
     public DownloadFile(File file, boolean isFile, Request request,Context c) {
         super(file, isFile, request);
-        c=context;
+        context = c;
     }
 
     //Получаем прогрес загрузки
@@ -56,6 +58,7 @@ public class DownloadFile extends NetworkServiceFileDownload {
                 .setContentTitle("Dowload")
                 .setContentText(getFile().toString())
                 .setProgress(100, 0, false);
+        notificationBuilder.setSmallIcon(R.drawable.ic_cloud_download_black_24dp);
         notification = notificationBuilder.build();
         notificationManager.notify(notificationID, notification);
     }
@@ -69,7 +72,7 @@ public class DownloadFile extends NetworkServiceFileDownload {
         if (response.isValidCode()) {
             Toast.makeText(context,"Downloaded at " + getFile().toString(),Toast.LENGTH_SHORT).show();
             try {
-                openFile(context, new File(Environment.getDataDirectory() + File.separator + "BOLT" + File.separator + getFile()));
+                openFile(context, getFile());
             } catch (IOException e) {
                 e.printStackTrace();
             }

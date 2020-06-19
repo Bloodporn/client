@@ -69,7 +69,7 @@ public class NetworkServiceFileDownload extends GetData {
                     }
                     if (!nameFile.equals("null"))
                     {
-                        file = new File(file.getAbsolutePath() + "\\" + nameFile);
+                        file = new File(file.getAbsolutePath() + File.separator + nameFile);
                         file.createNewFile();
                     }
                     FileOutputStream fos=new FileOutputStream(file);

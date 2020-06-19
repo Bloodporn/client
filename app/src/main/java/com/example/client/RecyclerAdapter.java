@@ -101,16 +101,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
              }
          }
          holder.nameTextView.setText(curOne.name);
-         holder.typeImage.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 Request request = new Request(
-                         "UPLOAD",
-                         tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
-                         201);
-             }
-         });
-
 
 
          holder.menuButton.setOnClickListener(new View.OnClickListener() {
@@ -126,12 +116,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                      public void onClick(View v) {
                          Toast.makeText(context,"Open file"+ tree.getCur().getChildren().get(position).getValue().name,Toast.LENGTH_SHORT).show();
 
+
                          Request request = new Request(
                                  "UPLOAD",
                                  tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
                                  201);
-                         DownloadFile dowl= new DownloadFile(new File(Environment.getDataDirectory() + File.separator + "BOLT"),true,request,context);
-
+                         DownloadFile dowl= new DownloadFile(new File(Environment.getDataDirectory() + File.separator + "BOLT"),
+                                 true,
+                                 request,
+                                 tree.getCur().getChildren().get(position).getValue().name,
+                                 context);
+                         dowl.execute();
 
                          bottomSheetDialog.dismiss();
                      }
