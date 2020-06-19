@@ -1,6 +1,7 @@
 package com.example.client;
 
 import android.content.Context;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.client.Files.FileData;
 import com.example.client.Files.Tree;
 import com.example.client.Files.TreeItem;
+import com.example.client.connection.DownloadFile;
 import com.example.client.connection.Request;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -99,6 +101,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
              }
          }
          holder.nameTextView.setText(curOne.name);
+         holder.typeImage.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Request request = new Request(
+                         "UPLOAD",
+                         tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
+                         201);
+             }
+         });
+
+
 
          holder.menuButton.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -113,11 +126,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                      public void onClick(View v) {
                          Toast.makeText(context,"Open file"+ tree.getCur().getChildren().get(position).getValue().name,Toast.LENGTH_SHORT).show();
 
-                         //TODO
                          Request request = new Request(
                                  "UPLOAD",
                                  tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
                                  201);
+                         DownloadFile dowl= new DownloadFile(new File(Environment.getDataDirectory() + File.separator + "BOLT"),true,request,context);
+
 
                          bottomSheetDialog.dismiss();
                      }

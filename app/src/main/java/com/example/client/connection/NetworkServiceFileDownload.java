@@ -13,6 +13,22 @@ import java.net.UnknownHostException;
 
 public class NetworkServiceFileDownload extends GetData {
 
+    public File getFile() {
+        return file;
+    }
+
+    public boolean isFile() {
+        return isFile;
+    }
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public String getNameFile() {
+        return nameFile;
+    }
+
     private File file;
     private final boolean isFile;
     private final Request request;

@@ -77,7 +77,11 @@ public class MainActivity extends AppCompatActivity {
         buttonLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String log,pass;
+                Intent i = new Intent(MainActivity.this,FolderView.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                finish();
+                /*String log,pass;
                 log=login.getText().toString();
                 pass=password.getText().toString();
                 if (pass.equals("") || log.equals("")) {
@@ -90,12 +94,11 @@ public class MainActivity extends AppCompatActivity {
                     Authorization authorization = new Authorization(request);
                     authorization.execute();
 
-                    /*
-                     *<-- Authorization -->
-                     */
+
+                */
                 }
 
-            }
+
         });
 
         buttonReg.setOnClickListener(new View.OnClickListener() {

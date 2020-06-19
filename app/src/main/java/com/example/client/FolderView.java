@@ -1,6 +1,8 @@
 package com.example.client;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.view.Menu;
@@ -64,6 +67,9 @@ public class FolderView extends AppCompatActivity {
         setContentView(R.layout.activity_folder_view);
         sql = new SqlService(this);
 
+        File storage = new File (Environment.getDataDirectory()+File.separator+"BOLT");
+        if(!storage.exists())
+            storage.mkdirs();
 
 
         final ActionBar actionBar= getSupportActionBar();
@@ -451,46 +457,6 @@ public class FolderView extends AppCompatActivity {
         }
     }
 
-    class DownloadFile extends NetworkServiceFileDownload {
 
-        //file - папка
-        //NameFile - название файла
-        public DownloadFile(File file, boolean isFile, Request request, String nameFile) {
-            super(file, isFile, request, nameFile);
-        }
-
-        //file - сразу созданный файл
-        public DownloadFile(File file, boolean isFile, Request request) {
-            super(file, isFile, request);
-        }
-
-        //Получаем прогрес загрузки
-        @Override
-        protected void onProgressUpdate(Long... values) {
-            super.onProgressUpdate(values);
-            long inMoment = values[0];
-            long allSize = values[1];
-            //TODO: Добавить прогресс.
-        }
-
-        //Перед загрузкой
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //TODO
-        }
-
-        //Окончание загрузки
-        @Override
-        protected void onPostExecute(Response response) {
-            super.onPostExecute(response);
-            //TODO
-            if (response.isValidCode()) {
-                //код, если ответ успешный
-            } else {
-                //Код, если ответ не успешный
-            }
-        }
-    }
 
 }
