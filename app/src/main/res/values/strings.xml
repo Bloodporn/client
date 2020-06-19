@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">client</string>
-    <string name="enter">Enter</string>
-    <string name="registration">Registration</string>
-    <string name="e_mail">E-mail</string>
-    <string name="password">Password</string>
+    <string name="app_name">Bolt Drive</string>
+    <string name="enter">Вход</string>
+    <string name="registration">Регистрация</string>
+    <string name="e_mail">Почта</string>
+    <string name="password">Пароль</string>
     <string name="textview">TextView</string>
-    <string name="login">Login</string>
-    <string name="name">Name</string>
+    <string name="login">Логин</string>
+    <string name="name">Имя</string>
     <string name="download">Download:</string>
     <string name="remove">Remove</string>
     <string name="file_name">FILE_NAME</string>

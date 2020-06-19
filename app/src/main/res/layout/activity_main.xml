@@ -63,47 +63,63 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="17dp"
         android:layout_marginEnd="88dp"
         android:background="@drawable/buttons"
         android:text="@string/enter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="4dp"
-        android:text="Dont have an accaunt?"
-        android:textColor="#3E3E3E"
-        app:layout_constraintEnd_toStartOf="@+id/textbuttonreg"
-        app:layout_constraintHorizontal_bias="0.52"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
-
-    <TextView
+    <Button
         android:id="@+id/textbuttonreg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="64dp"
-        android:text="Motherfucker!"
-        android:textColor="#3B5CFF"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="88dp"
+        android:background="@drawable/buttons"
+        android:text="Регистрация"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView4" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonlog" />
 
     <ImageView
         android:id="@+id/BOLT1"
         android:layout_width="91dp"
         android:layout_height="91dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonlog"
+        app:layout_constraintTop_toBottomOf="@+id/textbuttonreg"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_bolt_and_nut_svgrepo_com" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="251dp"
+        android:text="CheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="251dp"
+        android:text="CheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,8 +40,8 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class MainActivity extends AppCompatActivity {
 
     Switch myswitch;
-    Button buttonLog;
-    TextView password,login,buttonReg;
+    Button buttonLog, buttonReg;
+    TextView password,login;
 
     AnimatorSet front,back;
     boolean isFront =true;

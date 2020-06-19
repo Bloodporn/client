@@ -180,10 +180,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
         }
     };
 
-
-
-
-
+    public void update() {
+        notifyDataSetChanged();
+    }
 
 
     static class itemViewHolder extends RecyclerView.ViewHolder{

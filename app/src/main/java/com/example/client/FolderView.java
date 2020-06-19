@@ -1,43 +1,51 @@
 package com.example.client;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import android.view.MenuItem;
-
-
-import com.example.client.Files.FileData;
-import com.example.client.Files.Tree;
-import com.example.client.Files.TreeItem;
-import com.example.client.dataclient.DataClient;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.regex.Pattern;
-
-import androidx.appcompat.widget.SearchView;
-
-
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.view.Menu;
-
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.client.Files.FileData;
+import com.example.client.Files.Tree;
+import com.example.client.Files.TreeItem;
+import com.example.client.connection.NetworkServiceFileUpload;
+import com.example.client.connection.Request;
+import com.example.client.connection.Response;
+import com.example.client.dataclient.DataClient;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
+import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Pattern;
 
 
 public class FolderView extends AppCompatActivity {
@@ -45,9 +53,9 @@ public class FolderView extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerAdapter recadapter;
     SqlService sql;
-    static boolean isActive1=true;
-    static boolean isActive2=false;
+    Tree tree;
     FloatingActionButton fab;
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +79,7 @@ public class FolderView extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(false);
         }
 
-        Tree tree = new Tree();
+        tree = new Tree();
         if (DataClient.tree != null) {
             Pattern pattern = Pattern.compile("\n");
             parseTree(tree.getRoot(), pattern.split(DataClient.tree), new Index(0), 0);
@@ -143,10 +151,13 @@ public class FolderView extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                    i.setType("*/*");
-                    i.addCategory(Intent.CATEGORY_OPENABLE);
-                    startActivityForResult(Intent.createChooser(i,"Choose directory"), 9999);
+                int permissionCheck = ContextCompat.checkSelfPermission(FolderView.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(FolderView.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 25);
+                } else {
+                    upload();
+                }
             }
         });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -170,6 +181,27 @@ public class FolderView extends AppCompatActivity {
 
     }
     SearchView searchView;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 25:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    upload();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void upload() {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType("*/*");
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(Intent.createChooser(i,"Выберите файл"), 9999);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
@@ -191,16 +223,82 @@ public class FolderView extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    private long getFolderSize(File file) {
+        long size = 0;
+        if (file.isDirectory()) {
+            for (File child : file.listFiles()) {
+                size += getFolderSize(child);
+            }
+        } else {
+            size = file.length();
+        }
+        return size;
+    }
+
+    public String getRealPathFromURI(Uri contentUri)
+    {
+        String[] proj = { MediaStore.Audio.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    private String getPath(Context context, Uri uri) throws URISyntaxException {
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case 9999:
-                Uri uri = data.getData();
-
-
-                assert uri != null;
-                Toast.makeText(this, uri.getPath(),Toast.LENGTH_SHORT).show();
+                String path = null;
+                try {
+                    path = getPath(FolderView.this, data.getData());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                File file = new File(path);
+                String filename = file.getName();
+                if (file.isDirectory()) {
+                    Request request = new Request(
+                            "UPLOAD",
+                            tree.getPath() + file.getName() +
+                                    "//" + getFolderSize(file) + "//0",
+                            200);
+                    UploadFile uploadFile = new UploadFile(file, !file.isDirectory(), request);
+                    uploadFile.execute();
+                } else {
+                    Request request = new Request(
+                            "UPLOAD",
+                            tree.getPath() + file.getName() +
+                                    "//" + file.length() + "//1",
+                            200);
+                    UploadFile uploadFile = new UploadFile(file, !file.isDirectory(), request);
+                    uploadFile.execute();
+                }
                 break;
         }
     }
@@ -284,4 +382,81 @@ public class FolderView extends AppCompatActivity {
             index.index++;
         }
     }
+
+
+    class UploadFile extends NetworkServiceFileUpload {
+
+        private File fileThis;
+
+        public UploadFile(File file, boolean isFile, Request request) {
+            super(file, isFile, request);
+            this.fileThis = file;
+        }
+
+        @Override
+        protected void onPostExecute(Response response) {
+            super.onPostExecute(response);
+            if (response.isValidCode()) {
+                Toast.makeText(FolderView.this, response.toString(), Toast.LENGTH_SHORT).show();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                if (isFile) {
+                    TreeItem newFile = new TreeItem(new FileData(
+                            false,
+                            fileThis.getName(),
+                            dateFormat.format(new Date(fileThis.lastModified())),
+                            fileThis.length()), tree.getCur());
+                    tree.getCur().getChildren().add(newFile);
+                    DataClient.storageFill += fileThis.length();
+                } else {
+
+                    TreeItem newFile = new TreeItem(new FileData(false,
+                            fileThis.getName(),
+                            dateFormat.format(new Date()),
+                            0),tree.getCur());
+                    tree.getCur().getChildren().add(newFile);
+                    recTree(fileThis, newFile);
+                }
+                recadapter.update();
+            } else {
+                Toast.makeText(FolderView.this, "Не успешно", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Long... values) {
+            super.onProgressUpdate(values);
+            long inMoment = values[0];
+            long allSize = values[1];
+            //TODO: Добавить прогресс.
+        }
+
+        protected void recTree(File fileSource,TreeItem parent) {
+            for (File file : fileSource.listFiles()) {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                if (file.isDirectory()) {
+                    TreeItem newPath = new TreeItem(new FileData(
+                            true,
+                            file.getName(),
+                            dateFormat.format(new Date(file.lastModified())),
+                            0), parent);
+                    parent.getChildren().add(newPath);
+                    recTree(file,newPath);
+                } else {
+                    TreeItem newFile = new TreeItem(new FileData(
+                            false,
+                            file.getName(),
+                            dateFormat.format(new Date(file.lastModified())),
+                            file.length()), parent);
+                    parent.getChildren().add(newFile);
+                    DataClient.storageFill += file.length();
+                }
+            }
+        }
+    }
+
 }

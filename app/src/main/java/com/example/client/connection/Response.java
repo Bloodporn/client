@@ -32,4 +32,13 @@ public class Response {
     public int getCode() {
         return code;
     }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "code=" + code +
+                ", text='" + text + '\'' +
+                ", validCode=" + validCode +
+                '}';
+    }
 }

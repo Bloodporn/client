@@ -20,4 +20,15 @@ public class Tree {
     public void setCur(TreeItem cur) {
         this.cur = cur;
     }
+
+    public String getPath() {
+        StringBuilder sb = new StringBuilder("\\");
+        TreeItem item = cur;
+        while (item.getParent() != null) {
+            sb.insert(0, item.getValue().name);
+            sb.insert(0,"\\");
+            item = item.getParent();
+        }
+        return sb.toString();
+    }
 }
