@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.client.Files.FileData;
 import com.example.client.Files.Tree;
 import com.example.client.Files.TreeItem;
+import com.example.client.connection.NetworkServiceFileDownload;
 import com.example.client.connection.NetworkServiceFileUpload;
 import com.example.client.connection.Request;
 import com.example.client.connection.Response;
@@ -235,15 +236,6 @@ public class FolderView extends AppCompatActivity {
         return size;
     }
 
-    public String getRealPathFromURI(Uri contentUri)
-    {
-        String[] proj = { MediaStore.Audio.Media.DATA };
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
     private String getPath(Context context, Uri uri) throws URISyntaxException {
         String filePath = "";
         String wholeID = DocumentsContract.getDocumentId(uri);
@@ -268,7 +260,7 @@ public class FolderView extends AppCompatActivity {
         return filePath;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -455,6 +447,48 @@ public class FolderView extends AppCompatActivity {
                     parent.getChildren().add(newFile);
                     DataClient.storageFill += file.length();
                 }
+            }
+        }
+    }
+
+    class DownloadFile extends NetworkServiceFileDownload {
+
+        //file - папка
+        //NameFile - название файла
+        public DownloadFile(File file, boolean isFile, Request request, String nameFile) {
+            super(file, isFile, request, nameFile);
+        }
+
+        //file - сразу созданный файл
+        public DownloadFile(File file, boolean isFile, Request request) {
+            super(file, isFile, request);
+        }
+
+        //Получаем прогрес загрузки
+        @Override
+        protected void onProgressUpdate(Long... values) {
+            super.onProgressUpdate(values);
+            long inMoment = values[0];
+            long allSize = values[1];
+            //TODO: Добавить прогресс.
+        }
+
+        //Перед загрузкой
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //TODO
+        }
+
+        //Окончание загрузки
+        @Override
+        protected void onPostExecute(Response response) {
+            super.onPostExecute(response);
+            //TODO
+            if (response.isValidCode()) {
+                //код, если ответ успешный
+            } else {
+                //Код, если ответ не успешный
             }
         }
     }
