@@ -69,7 +69,7 @@ public class DownloadFile extends NetworkServiceFileDownload {
         if (response.isValidCode()) {
             Toast.makeText(context,"Downloaded at " + getFile().toString(),Toast.LENGTH_SHORT).show();
             try {
-                openFile(context, new File(Environment.getDataDirectory() + File.separator + "BOLT" + File.separator + getFile()));
+                openFile(context, new File(Environment.getDataDirectory() + "BOLT" + File.separator + getFile()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -128,7 +128,7 @@ public class DownloadFile extends NetworkServiceFileDownload {
             //so you can choose which application to use
             intent.setDataAndType(uri, "*/*");
         }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         context.startActivity(intent);
     }
 }
