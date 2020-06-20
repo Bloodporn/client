@@ -125,7 +125,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                                  "UPLOAD",
                                  tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
                                  201);
-                         DownloadFile dowl= new DownloadFile(new File(Environment.getDataDirectory() + File.separator + "BOLT"),
+                         DownloadFile dowl= new DownloadFile(new File(context.getFilesDir().getAbsolutePath() + File.separator + "newfoldername"),
                                  true,
                                  request,
                                  tree.getCur().getChildren().get(position).getValue().name,

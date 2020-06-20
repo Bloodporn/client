@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,10 +77,14 @@ public class FolderView extends AppCompatActivity {
             ActivityCompat.requestPermissions(FolderView.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 26);
         }
 
-        File storage = new File (Environment.getDataDirectory()+File.separator+"BOLT");
-        if(!storage.exists())
-            storage.mkdirs();
+        //File storage = new File("/Bolt");
+        //if(!storage.exists())
+            //Log.i("file: ", Boolean.toString(storage.mkdirs()));
 
+        String dirPath = getFilesDir().getAbsolutePath() + File.separator + "newfoldername";
+        File projDir = new File(dirPath);
+        if (!projDir.exists())
+            Log.i("file: ", Boolean.toString(projDir.mkdirs()));
 
         final ActionBar actionBar= getSupportActionBar();
         assert actionBar != null;

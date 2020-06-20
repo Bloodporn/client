@@ -1,5 +1,7 @@
 package com.example.client.connection;
 
+import android.util.Log;
+
 import com.example.client.dataclient.DataClient;
 
 import java.io.BufferedInputStream;
@@ -70,7 +72,7 @@ public class NetworkServiceFileDownload extends GetData {
                     if (!nameFile.equals("null"))
                     {
                         file = new File(file.getAbsolutePath() + File.separator + nameFile);
-                        file.createNewFile();
+                        Log.i("Create file:", Boolean.toString(file.createNewFile()));
                     }
                     FileOutputStream fos=new FileOutputStream(file);
                     BufferedInputStream bis = new BufferedInputStream(ois);
