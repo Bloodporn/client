@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradiet__"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
     <EditText
@@ -12,14 +12,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="64dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:textColor="#000000"
-        android:textColorHint="@color/hintTextDay"
+        android:textColorHighlight="#4D8DFF"
+        android:textColorHint="#000000"
+        android:textColorLink="#D83535"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 
@@ -30,12 +33,13 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="88dp"
         android:layout_marginEnd="24dp"
-        android:text="BEST WAY TO STORE YOUR DATA"
+        android:fontFamily="sans-serif-light"
+        android:text="Bolt Drive"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="#000000"
         android:textSize="24sp"
-        android:typeface="serif"
+        android:typeface="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +47,7 @@
 
     <EditText
         android:id="@+id/login"
+        style="@style/Widget.AppCompat.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -51,8 +56,10 @@
         android:ems="10"
         android:hint="@string/login"
         android:inputType="textPersonName"
+        android:singleLine="true"
         android:textColor="#000000"
-        android:textColorHint="@color/hintTextDay"
+        android:textColorHint="#000000"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,30 +68,47 @@
     <Button
         android:id="@+id/buttonlog"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:layout_marginStart="88dp"
         android:layout_marginTop="17dp"
         android:layout_marginEnd="88dp"
         android:background="@drawable/buttons"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/enter"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
     <Button
         android:id="@+id/textbuttonreg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="88dp"
-        android:background="@drawable/buttons"
+        android:background="@drawable/regis"
+        android:fontFamily="sans-serif-medium"
         android:text="Регистрация"
+        android:textColor="#5CB3F4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonlog" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="251dp"
+        android:buttonTint="#5CB3F4"
+        android:text="Запомнить пароль"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <ImageView
         android:id="@+id/BOLT1"
@@ -99,27 +123,19 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_bolt_and_nut_svgrepo_com" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
+    <ProgressBar
+        android:id="@+id/progressBarAuto"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="251dp"
-        android:text="CheckBox"
+        android:layout_marginStart="181dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="182dp"
+        android:indeterminate="true"
+        android:progressDrawable="@color/buttonbackgroundNight"
+        android:progressTint="#55C2FD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="251dp"
-        android:text="CheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 </androidx.constraintlayout.widget.ConstraintLayout>

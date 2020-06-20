@@ -89,25 +89,105 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
              }
              case 1:{
                  holder.typeImage.setImageResource(R.drawable.ic_spike_design_guitar_svgrepo_com);
+                 holder.typeImage.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Request request = new Request(
+                                 "UPLOAD",
+                                 tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
+                                 201);
+                         DownloadFile dowl= new DownloadFile(new File(context.getFilesDir().getAbsolutePath() + File.separator + "newfoldername"),
+                                 true,
+                                 request,
+                                 tree.getCur().getChildren().get(position).getValue().name,
+                                 context);
+                         dowl.execute();
+                     }
+                 });
+
                  break;
              }
              case 2:{
-                 holder.typeImage.setImageResource(R.drawable.ic_photo_svgrepo_com);
+                 holder.typeImage.setImageResource(R.drawable.ic_baseline_image_24);
+                 holder.typeImage.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Request request = new Request(
+                                 "UPLOAD",
+                                 tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
+                                 201);
+                         DownloadFile dowl= new DownloadFile(new File(context.getFilesDir().getAbsolutePath() + File.separator + "newfoldername"),
+                                 true,
+                                 request,
+                                 tree.getCur().getChildren().get(position).getValue().name,
+                                 context);
+                         dowl.execute();
+                     }
+                 });
                  break;
              }
              case 3:{
                  holder.typeImage.setImageResource(R.drawable.ic_files_pngrepo_com);
+                 holder.typeImage.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Request request = new Request(
+                                 "UPLOAD",
+                                 tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
+                                 201);
+                         DownloadFile dowl= new DownloadFile(new File(context.getFilesDir().getAbsolutePath() + File.separator + "newfoldername"),
+                                 true,
+                                 request,
+                                 tree.getCur().getChildren().get(position).getValue().name,
+                                 context);
+                         dowl.execute();
+                     }
+                 });
                  break;
              }
              case 4:{
-                 holder.typeImage.setImageResource(R.drawable.ic_accessible_black_24dp);
+                 holder.typeImage.setImageResource(R.drawable.ic_baseline_videocam_24);
+                 holder.typeImage.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Request request = new Request(
+                                 "UPLOAD",
+                                 tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
+                                 201);
+                         DownloadFile dowl= new DownloadFile(new File(context.getFilesDir().getAbsolutePath() + File.separator + "newfoldername"),
+                                 true,
+                                 request,
+                                 tree.getCur().getChildren().get(position).getValue().name,
+                                 context);
+                         dowl.execute();
+                     }
+                 });
+                 break;
+             }
+             case 5:{
+                 holder.typeImage.setImageResource(R.drawable.ic_baseline_insert_drive_file_24);
+                 holder.typeImage.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Request request = new Request(
+                                 "UPLOAD",
+                                 tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
+                                 201);
+                         DownloadFile dowl= new DownloadFile(new File(context.getFilesDir().getAbsolutePath() + File.separator + "newfoldername"),
+                                 true,
+                                 request,
+                                 tree.getCur().getChildren().get(position).getValue().name,
+                                 context);
+                         dowl.execute();
+                     }
+                 });
                  break;
              }
          }
          holder.nameTextView.setText(curOne.name);
 
 
-         holder.menuButton.setOnClickListener(new View.OnClickListener() {
+         /*holder.menuButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  final BottomSheetDialog bottomSheetDialog=new BottomSheetDialog(context,R.style.BottomSheetDialogTheme);
@@ -119,18 +199,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                      @Override
                      public void onClick(View v) {
                          Toast.makeText(context,"Open file"+ tree.getCur().getChildren().get(position).getValue().name,Toast.LENGTH_SHORT).show();
-
-
-                         Request request = new Request(
-                                 "UPLOAD",
-                                 tree.getPath() + tree.getCur().getChildren().get(position).getValue().name,
-                                 201);
-                         DownloadFile dowl= new DownloadFile(new File(context.getFilesDir().getAbsolutePath() + File.separator + "newfoldername"),
-                                 true,
-                                 request,
-                                 tree.getCur().getChildren().get(position).getValue().name,
-                                 context);
-                         dowl.execute();
 
                          bottomSheetDialog.dismiss();
                      }
@@ -160,7 +228,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                  bottomSheetDialog.show();
              }
 
-         });
+         });*/
 
     }
 
@@ -232,12 +300,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
             extension=str.substring(i+1);
             if(extension.equals("mp3") || extension.equals("flac") || extension.equals("wav") || extension.equals("alac") || extension.equals("aiff"))
                 return 1;
-            if(extension.equals("png") || extension.equals("bmp") || extension.equals("jpg")|| extension.equals("gif")|| extension.equals("tiff")|| extension.equals("raw")|| extension.equals("psd"))
+            if(extension.equals("png") || extension.equals("bmp") || extension.equals("jpg")|| extension.equals("gif")|| extension.equals("tiff")|| extension.equals("raw")|| extension.equals("psd")|| extension.equals("jpeg"))
                 return 2;
             if(extension.equals("txt") || extension.equals("doc") || extension.equals("pdf")|| extension.equals("docx")|| extension.equals("xls")|| extension.equals("ptt")|| extension.equals("xlsx"))
                 return 3;
+            if (extension.equals("mp4") || extension.equals("mpeg") || extension.equals("avi") || extension.equals("h264"))
+                return 4;
         }
-        return 4;
+        return 5;
     }
 
 

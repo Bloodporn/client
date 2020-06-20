@@ -11,19 +11,26 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.client.connection.NetworkServiceMessage;
+import com.example.client.connection.Request;
+import com.example.client.connection.Response;
+import com.example.client.dataclient.DataClient;
 
 public class Registration extends AppCompatActivity {
 
     TextView login,password,email;
     Button registration;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration2);
-
-
+        progressBar = findViewById(R.id.progressBarReg);
+        progressBar.setVisibility(View.INVISIBLE);
 
         getSupportActionBar().hide();
         ExternalFunc.setStatusBarGradiant(this);
@@ -55,21 +62,22 @@ public class Registration extends AppCompatActivity {
                 pass=password.getText().toString();
                 mail=email.getText().toString();
 
-                if(log.equals("")){
 
-                    Toast.makeText(Registration.this,"Bad login",Toast.LENGTH_SHORT).show();
-                } else{
-                    if(pass.equals("")){
-                        Toast.makeText(Registration.this,"Bad pass",Toast.LENGTH_SHORT).show();
-                    }else{
-                        if(!isValidEmail(mail)){
-                            Toast.makeText(Registration.this,"Bad mail",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(Registration.this,"Nice dick",Toast.LENGTH_SHORT).show();
-                            /*
-                             *<-- Registration -->
-                             */
-
+                if (!isValidEmail(mail)) {
+                    email.setError("Неправильные данные");
+                } else {
+                    if(log.equals("")){
+                        login.setError("Заполните поле");
+                    } else {
+                        if (pass.equals("")) {
+                            password.setError("Заполните поле");
+                        } else {
+                            DataClient.login = log;
+                            DataClient.password = pass;
+                            DataClient.email = mail;
+                            Request request = new Request("REGISTRATION", DataClient.email,100);
+                            RegistrationNetwork registrationNetwork = new RegistrationNetwork(request);
+                            registrationNetwork.execute();
                         }
                     }
                 }
@@ -86,4 +94,32 @@ public class Registration extends AppCompatActivity {
         return m.matches();
     }
 
+
+
+
+    class RegistrationNetwork extends NetworkServiceMessage {
+
+        public RegistrationNetwork(Request request) {
+            super(request);
+        }
+
+
+        @Override
+        protected void onPostExecute(Response response) {
+            super.onPostExecute(response);
+            progressBar.setVisibility(View.INVISIBLE);
+            if (response.isValidCode()) {
+                Toast.makeText(Registration.this,"Успешная регистрация", Toast.LENGTH_SHORT).show();
+                finishActivity(10);
+            } else {
+                Toast.makeText(Registration.this, "Этот пользователь уже существует", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradiet__"
+    android:background="#FFFFFF"
     tools:context=".Registration">
 
     <TextView
@@ -12,18 +12,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
-        android:text="ENTER THE CLUB"
+        android:fontFamily="sans-serif-medium"
+        android:text="Регистрация"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="#000000"
         android:textSize="24sp"
         android:typeface="serif"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.304"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
 
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/passreg"
@@ -32,13 +32,13 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
+        android:autofillHints="@string/password"
         android:ems="10"
         android:hint="@string/password"
-        android:autofillHints="@string/password"
 
         android:inputType="textPassword"
         android:textColor="#000000"
-        android:textColorHint="@color/hintTextDay"
+        android:textColorHint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -53,12 +53,12 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
+        android:autofillHints="@string/login"
         android:ems="10"
         android:hint="@string/login"
-        android:autofillHints="@string/login"
         android:inputType="textPersonName"
         android:textColor="#000000"
-        android:textColorHint="@color/hintTextDay"
+        android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,12 +71,12 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="64dp"
+        android:autofillHints="@string/e_mail"
         android:ems="10"
         android:hint="@string/e_mail"
-        android:autofillHints="@string/e_mail"
         android:inputType="textEmailAddress"
         android:textColor="#000000"
-        android:textColorHint="@color/hintTextDay"
+        android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,8 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="88dp"
         android:background="@drawable/buttons"
-        android:text="REGISTER"
+        android:text="Регистрация"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passreg" />
@@ -106,5 +107,20 @@
         app:layout_constraintTop_toBottomOf="@+id/registrbutton"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_bolt_and_nut_svgrepo_com" />
+
+    <ProgressBar
+        android:id="@+id/progressBarReg"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="181dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="182dp"
+        android:indeterminate="true"
+        android:progressDrawable="@color/buttonbackgroundNight"
+        android:progressTint="#4A79D8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registrbutton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

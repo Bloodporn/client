@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -86,6 +88,7 @@ public class FolderView extends AppCompatActivity {
         if (!projDir.exists())
             Log.i("file: ", Boolean.toString(projDir.mkdirs()));
 
+
         final ActionBar actionBar= getSupportActionBar();
         assert actionBar != null;
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.navigbar)));
@@ -101,6 +104,7 @@ public class FolderView extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(false);
         }
 
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"white\">" + getString(R.string.app_name) + "</font>"));
         tree = new Tree();
         if (DataClient.tree != null) {
             Pattern pattern = Pattern.compile("\n");
@@ -108,13 +112,13 @@ public class FolderView extends AppCompatActivity {
         }
 
 
-        final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
-        final View all = findViewById(R.id.home);
-        final View fav = findViewById(R.id.important);
-        bottomNavigationView.setSelectedItemId(R.id.home);
-        all.setAlpha(1);
-        fav.setAlpha(0.8f);
-        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.navigbar));
+        //final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
+       // final View all = findViewById(R.id.home);
+        //final View fav = findViewById(R.id.important);
+        //bottomNavigationView.setSelectedItemId(R.id.home);
+        //all.setAlpha(1);
+       // fav.setAlpha(0.8f);
+        //bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.navigbar));
 
         recyclerView=findViewById(R.id.review);
         int resId1 = R.anim.anim1_layout;

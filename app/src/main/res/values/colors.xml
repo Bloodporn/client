@@ -22,10 +22,11 @@
     <color name="vectorDay">#B14646</color>
     <color name="vectorNight">#B14646</color>
 
-    <color name="navigbar">#FAF8DD</color>
+    <color name="navigbar">#5CB3F4</color>
 
 
     <color name="backgroundNavigBarDay">#8BC34A</color>
     <color name="backgroundNavigBarNight">#8BC34A</color>
+    <color name="backNavig">#5CB3F4</color>
 
 </resources>

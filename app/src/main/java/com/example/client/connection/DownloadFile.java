@@ -1,6 +1,7 @@
 package com.example.client.connection;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.client.R;
@@ -18,12 +21,13 @@ import java.io.IOException;
 
 public class DownloadFile extends NetworkServiceFileDownload {
 
+    private static final String NOTIFICATION_ID = "25";
     //file - папка
     //NameFile - название файла
     Context context;
-    Notification notification;
-    Notification.Builder notificationBuilder;
-    NotificationManager notificationManager;
+    NotificationCompat notification;
+    NotificationCompat.Builder builder;
+    NotificationManagerCompat notificationManager;
     Integer notificationID = 100;
     public DownloadFile(File file, boolean isFile, Request request, String nameFile, Context c) {
         super(file, isFile, request, nameFile);
@@ -42,9 +46,8 @@ public class DownloadFile extends NetworkServiceFileDownload {
         super.onProgressUpdate(values);
         long inMoment = values[0];
         long allSize = values[1];
-        notificationBuilder.setProgress((int)allSize, (int)inMoment, false);
-        notification = notificationBuilder.build();
-        notificationManager.notify(notificationID, notification);
+        builder.setProgress((int)allSize,(int)inMoment,false);
+        notificationManager.notify(25, builder.build());
     }
 
     //Перед загрузкой
@@ -53,17 +56,23 @@ public class DownloadFile extends NetworkServiceFileDownload {
         super.onPreExecute();
 
 
-        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        //Set notification information:
-        notificationBuilder = new Notification.Builder(context);
-        notificationBuilder.setOngoing(true)
-                .setContentTitle("Dowload")
-                .setContentText(getFile().toString())
-                .setProgress(100, 0, false);
-        notificationBuilder.setSmallIcon(R.drawable.ic_cloud_download_black_24dp);
-        notification = notificationBuilder.build();
-        notificationManager.notify(notificationID, notification);
+        builder = new NotificationCompat.Builder(context, "25")
+                .setSmallIcon(R.drawable.ic_cloud_download_black_24dp)
+                .setContentTitle("Загрузка")
+                .setContentText(getNameFile())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setProgress(0,100,false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Downloading";
+            String description = "chanel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+        notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(25, builder.build());
     }
 
     //Окончание загрузки
@@ -71,8 +80,13 @@ public class DownloadFile extends NetworkServiceFileDownload {
     protected void onPostExecute(Response response) {
         super.onPostExecute(response);
         //TODO
-        //notificationManager.cancel(notificationID);
+        builder.setContentText(getNameFile()+ " скачался");
+        builder.setProgress(0,0,false);
+        notificationManager.notify(25, builder.build());
         if (response.isValidCode()) {
+            builder.setContentText(getNameFile()+ " скачался");
+            builder.setProgress(0,0,false);
+            notificationManager.notify(25, builder.build());
             //Toast.makeText(context,"Downloaded at " + getFile().toString(),Toast.LENGTH_SHORT).show();
             try {
                 openFile(context, getFile());
@@ -81,6 +95,9 @@ public class DownloadFile extends NetworkServiceFileDownload {
             }
         } else {
             Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
+            builder.setContentText(getNameFile()+ " Error");
+            builder.setProgress(0,0,false);
+            notificationManager.notify(25, builder.build());
         }
     }
 
