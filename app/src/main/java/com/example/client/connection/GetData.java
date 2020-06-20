@@ -12,6 +12,7 @@ public abstract class GetData extends AsyncTask<Void, Long, Response> {
     protected final void outMessage(DataOutputStream oos, Request request) throws IOException {
         oos.writeUTF(request.toString());
         oos.flush();
+        //отправляем запрос
     }
 
     protected final Response inMessage(DataInputStream ois, int validCode) throws IOException {
@@ -31,9 +32,11 @@ public abstract class GetData extends AsyncTask<Void, Long, Response> {
             response.setText(strings[2]);
         }
         return response;
+        //Получаем ответ
     }
 
     protected static byte[] longToBytes(long x) {
+        //перевод лог в байты
         byte[] result = new byte[8];
         for (int i = 7; i >= 0; i--) {
             result[i] = (byte)(x & 0xFF);
@@ -43,6 +46,7 @@ public abstract class GetData extends AsyncTask<Void, Long, Response> {
     }
 
     protected static long bytesToLong(byte[] bytes) {
+        //Перевод байтов в лонг
         long result = 0;
         for (int i = 0; i < Long.BYTES; i++) {
             result <<= Long.BYTES;
