@@ -80,8 +80,7 @@ public class DownloadFile extends NetworkServiceFileDownload {
 
     public static void openFile(Context context, File url) throws IOException {
         // Create URI
-        File file=url;
-        Uri uri = Uri.fromFile(file);
+        Uri uri = Uri.fromFile(url);
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         // Check what kind of file you are trying to open, by comparing the url with extensions.
