@@ -82,6 +82,7 @@ public class FolderView extends AppCompatActivity {
 
 
         final ActionBar actionBar= getSupportActionBar();
+        assert actionBar != null;
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.navigbar)));
 
         Window window=this.getWindow();
