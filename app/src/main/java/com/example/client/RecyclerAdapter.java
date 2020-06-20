@@ -99,6 +99,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
                  holder.typeImage.setImageResource(R.drawable.ic_files_pngrepo_com);
                  break;
              }
+             case 4:{
+                 holder.typeImage.setImageResource(R.drawable.ic_accessible_black_24dp);
+                 break;
+             }
          }
          holder.nameTextView.setText(curOne.name);
 
@@ -233,7 +237,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.itemVi
             if(extension.equals("txt") || extension.equals("doc") || extension.equals("pdf")|| extension.equals("docx")|| extension.equals("xls")|| extension.equals("ptt")|| extension.equals("xlsx"))
                 return 3;
         }
-        return -1;
+        return 4;
     }
 
 
